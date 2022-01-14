@@ -1,12 +1,10 @@
 import { Model } from "@nozbe/watermelondb";
 import { field } from "@nozbe/watermelondb/decorators";
 
-// obs: o modelo é a representação do objeto que trafega entre banco e aplicação
-
 class User extends Model {
   static table = "users";
 
-  @field("id")
+  @field("user_id")
   user_id!: string;
 
   @field("name")
@@ -26,3 +24,5 @@ class User extends Model {
 }
 
 export { User };
+
+// obs: o modelo é a representação do objeto que trafega entre banco e aplicação

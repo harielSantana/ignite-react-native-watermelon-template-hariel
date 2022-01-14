@@ -13,7 +13,7 @@ const { Navigator, Screen } = createStackNavigator();
 export function AuthRoutes() {
   return (
     <Navigator
-      initialRouteName="SignIn"
+      initialRouteName="Splash"
       screenOptions={{
         headerShown: false,
       }}

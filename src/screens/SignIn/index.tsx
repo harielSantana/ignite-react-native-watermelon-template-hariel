@@ -4,7 +4,6 @@ import * as Yup from "yup";
 import { StackScreenProps } from "@react-navigation/stack";
 
 import { useAuth } from "../../hooks/auth";
-import { database } from "../../database";
 
 import { RootStackParamList } from "../../types/react-navigation/stack.routes";
 
@@ -57,15 +56,6 @@ export function SignIn({ navigation }: Props) {
   function handleRegister() {
     navigation.navigate("SignUpFirstStep");
   }
-
-  useEffect(() => {
-    async function loadData() {
-      const userCollection = database.get("users");
-      const users = await userCollection.query().fetch();
-      console.log(users);
-    }
-    loadData();
-  });
 
   return (
     <KAV behavior={Platform.OS === "ios" ? "padding" : "height"}>
