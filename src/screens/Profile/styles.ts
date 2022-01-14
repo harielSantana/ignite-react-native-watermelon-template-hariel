@@ -63,6 +63,6 @@ export const PhotoButton = styled(RectButton)`
   justify-content: center;
 
   position: absolute;
-  bottom: 10;
-  right: 10;
+  bottom: 10px;
+  right: 10px;
 `;
