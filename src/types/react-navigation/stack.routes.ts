@@ -5,14 +5,15 @@ import { SchedulingDetailsParams } from "../../screens/SchedulingDetails";
 import { SignUpSecondStepParams } from "../../screens/SignUp/SecondStep";
 
 export type RootStackParamList = {
-    Splash: undefined;
-    SignIn: undefined;
-    SignUpFirstStep: undefined;
-    SignUpSecondStep: SignUpSecondStepParams;
-    Home: undefined;
-    CarDetails: CarDetailsParams;
-    Scheduling: SchedulingParams;
-    SchedulingDetails: SchedulingDetailsParams;
-    Confirmation: ConfirmationParams;
-    MyCars: undefined;
+  Splash: undefined;
+  SignIn: undefined;
+  SignUpFirstStep: undefined;
+  SignUpSecondStep: SignUpSecondStepParams;
+  Home: undefined;
+  CarDetails: CarDetailsParams;
+  Scheduling: SchedulingParams;
+  SchedulingDetails: SchedulingDetailsParams;
+  Confirmation: ConfirmationParams;
+  MyCars: undefined;
+  Profile: undefined;
 };
