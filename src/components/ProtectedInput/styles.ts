@@ -1,5 +1,5 @@
 import { TextInput, View } from "react-native";
-import { RectButton } from "react-native-gesture-handler";
+import { RectButton, TouchableOpacity } from "react-native-gesture-handler";
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 
@@ -35,7 +35,9 @@ export const InputText = styled(TextInput)`
   padding: 0 6px 0 24px;
 `;
 
-export const ToggleSecureTextEntryButton = styled.TouchableOpacity`
+export const ToggleSecureTextEntryButton = styled(TouchableOpacity)`
+  flex: 1;
+
   align-items: center;
   justify-content: center;
   background-color: ${({ theme }) => theme.colors.background_secondary};
