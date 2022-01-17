@@ -33,7 +33,7 @@ import {
 type Props = StackScreenProps<RootStackParamList, "Profile">;
 
 export function Profile({ navigation }: Props) {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   const [option, setOption] = useState<"dataEdit" | "passwordEdit">("dataEdit");
   const [avatar, setAvatar] = useState(user.avatar);
@@ -77,7 +77,7 @@ export function Profile({ navigation }: Props) {
             <HeaderTop>
               <BackButton color={theme.colors.shape} onPress={handleGoBack} />
               <HeaderTitle>Editar Perfil</HeaderTitle>
-              <LogoutButton onPress={handleSignOut}>
+              <LogoutButton onPress={signOut}>
                 <Feather name="power" size={24} color={theme.colors.shape} />
               </LogoutButton>
             </HeaderTop>
