@@ -1,15 +1,15 @@
-import React from 'react';
-import { Feather } from '@expo/vector-icons';
-import { useTheme } from 'styled-components';
-import { StyleProp, TextInputProps, ViewStyle } from 'react-native';
+import React from "react";
+import { Feather } from "@expo/vector-icons";
+import { useTheme } from "styled-components";
+import { StyleProp, TextInputProps, ViewStyle } from "react-native";
 
 import {
-  Container, 
-  IconContainer, 
+  Container,
+  IconContainer,
   InputText,
-  ToggleSecureTextEntryButton
-} from './styles';
-import { useState } from 'react';
+  ToggleSecureTextEntryButton,
+} from "./styles";
+import { useState } from "react";
 
 interface ProtectedInputProps extends TextInputProps {
   style?: StyleProp<ViewStyle>;
@@ -32,32 +32,33 @@ export function ProtectedInput({ style, value, ...rest }: ProtectedInputProps) {
   }
 
   function handleToggleSecureTextEntry() {
-    setIsTextEntrySecured(state => !state);
+    setIsTextEntrySecured((state) => !state);
   }
 
   return (
     <Container style={style} isFocused={isFocused}>
       <IconContainer>
-        <Feather 
+        <Feather
           name="lock"
           size={24}
-          color={isFocused || isFilled ? theme.colors.main : theme.colors.text_detail}
+          color={
+            isFocused || isFilled ? theme.colors.main : theme.colors.text_detail
+          }
         />
       </IconContainer>
 
       <InputText
+        {...rest}
         placeholderTextColor={theme.colors.text_detail}
         secureTextEntry={isTextEntrySecured}
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
-        {...rest} 
+        autoCorrect={false}
       />
 
-      <ToggleSecureTextEntryButton
-        onPress={handleToggleSecureTextEntry}
-      >
-        <Feather 
-          name={ isTextEntrySecured ? "eye-off" : "eye" }
+      <ToggleSecureTextEntryButton onPress={handleToggleSecureTextEntry}>
+        <Feather
+          name={isTextEntrySecured ? "eye-off" : "eye"}
           size={24}
           color={theme.colors.text_detail}
         />
