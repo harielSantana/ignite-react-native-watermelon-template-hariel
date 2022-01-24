@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Alert, Button, StatusBar } from "react-native";
+import { Alert, StatusBar } from "react-native";
 
-import { useTheme } from "styled-components";
 import { RFValue } from "react-native-responsive-fontsize";
 import { StackScreenProps } from "@react-navigation/stack";
 import { useNetInfo } from "@react-native-community/netinfo";
@@ -33,6 +32,29 @@ export function Home({ navigation }: Props) {
     navigation.navigate("CarDetails", { car });
   }
 
+  async function offlineSync() {
+    await synchronize({
+      database,
+      pullChanges: async ({ lastPulledAt }) => {
+        const { data } = await api.get(
+          `/cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`
+        );
+
+        const { changes, latestVersion } = data;
+
+        return { changes, timestamp: latestVersion };
+      },
+      pushChanges: async ({ changes }) => {
+        const user = changes.users;
+        await api.post("/users/sync", user).catch((error: any) => {
+          console.error(
+            `file: src/screens/Home\nfunction: pushChanges\nerror: ${error.message}`
+          );
+        });
+      },
+    });
+  }
+
   useEffect(() => {
     let isMounted = true;
 
@@ -60,35 +82,20 @@ export function Home({ navigation }: Props) {
   }, []);
 
   useEffect(() => {
-    const syncChanges = async () => {
-      if (netInfo.isConnected && !synchronizing.current) {
-        synchronizing.current = true;
-        try {
-          await synchronize({
-            database,
-            pullChanges: async ({ lastPulledAt }) => {
-              const response = await api.get(
-                `cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`
-              );
-
-              const { changes, latestVersion } = response.data;
-              return { changes, timestamp: latestVersion };
-            },
-            pushChanges: async ({ changes }) => {
-              const user = changes.users;
-
-              await api.post("/users/sync", user);
-            },
-          });
-        } catch (error) {
-          console.log("Home", (error as Error).message);
-        } finally {
-          synchronizing.current = false;
-        }
-      }
-    };
-    syncChanges();
+    if (netInfo.isConnected) {
+      offlineSync();
+    }
   }, [netInfo.isConnected]);
+
+  useEffect(() => {
+    if (netInfo.isConnected === true) {
+      Alert.alert("Is connected");
+      console.log(netInfo.isConnected);
+    } else {
+      Alert.alert("Not connected");
+      console.log(netInfo.isConnected);
+    }
+  }, []);
 
   return (
     <Container>
