@@ -61,11 +61,7 @@ export function Profile({ navigation }: Props) {
       quality: 1,
     });
 
-    if (result.cancelled) {
-      return;
-    }
-
-    if (result.uri) {
+    if (!result.cancelled) {
       setAvatar(result.uri);
     }
   }
@@ -83,19 +79,20 @@ export function Profile({ navigation }: Props) {
       await updatedUser({
         id: user.id,
         user_id: user.user_id,
-        email: user.email,
         name,
-        driver_license: driverLicense,
+        email: user.email,
+        driver_license: user.driver_license,
         avatar,
         token: user.token,
       });
 
-      Alert.alert("Perfil atualizado");
+      Alert.alert("Perfil atualizado com sucesso!");
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         Alert.alert("Opa", error.message);
+      } else {
+        Alert.alert("Não foi possível atualizar o perfil");
       }
-      Alert.alert("Não foi possivel atualizar o perfil.");
     }
   }
 

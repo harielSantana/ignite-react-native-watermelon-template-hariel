@@ -8,8 +8,7 @@ import {
 } from "react-native-reanimated";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
 import { StatusBar } from "react-native";
-
-import { CarDTO } from "../../dtos/CarDTO";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { getAccessoryIcon } from "../../utils/getAccessoryIcon";
 
@@ -35,17 +34,16 @@ import {
   AnimatedCarImages,
   AnimatedContent,
 } from "./styles";
-import { StackScreenProps } from "@react-navigation/stack";
-import { RootStackParamList } from "../../types/react-navigation/stack.routes";
 
-export interface CarDetailsParams {
-  car: CarDTO;
+import { Car as ModelCar } from "../../database/model/Car";
+
+export interface Params {
+  car: ModelCar;
 }
 
-type Props = StackScreenProps<RootStackParamList, "CarDetails">;
-
-export function CarDetails({ navigation, route }: Props) {
-  const { car } = route.params;
+export function CarDetails() {
+  const navigation = useNavigation();
+  const route = useRoute();
   const statusBarHeight = getStatusBarHeight();
 
   const scrollY = useSharedValue(0);
@@ -69,6 +67,7 @@ export function CarDetails({ navigation, route }: Props) {
       opacity: interpolate(scrollY.value, [0, 150], [1, 0], Extrapolate.CLAMP),
     };
   });
+  const { car } = route.params as Params;
 
   function handleChooseRentalPeriod() {
     navigation.navigate("Scheduling", { car });
