@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import { Alert, Keyboard, KeyboardAvoidingView } from "react-native";
 import { useTheme } from "styled-components/native";
+import { useNetInfo } from "@react-native-community/netinfo";
 import { StackScreenProps } from "@react-navigation/stack";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { Feather } from "@expo/vector-icons";
 
 import * as ImagePicker from "expo-image-picker";
 import * as Yup from "yup";
 
-import { Feather } from "@expo/vector-icons";
+import { useAuth } from "../../hooks/auth";
 import { RootStackParamList } from "../../types/react-navigation/stack.routes";
 
 import { BackButton } from "../../components/BackButton";
 import { Input } from "../../components/Input";
 import { ProtectedInput } from "../../components/ProtectedInput";
-import { useAuth } from "../../hooks/auth";
+import { Button } from "../../components/Button";
 
 import {
   Container,
@@ -31,7 +33,6 @@ import {
   OptionTitle,
   Section,
 } from "./styles";
-import { Button } from "../../components/Button";
 
 type Props = StackScreenProps<RootStackParamList, "Profile">;
 
@@ -44,13 +45,21 @@ export function Profile({ navigation }: Props) {
   const [driverLicense, setDriverLicense] = useState(user.driver_license);
 
   const theme = useTheme();
+  const netInfo = useNetInfo();
 
   function handleGoBack() {
     if (navigation.canGoBack()) navigation.goBack();
   }
 
   function handleOptionChange(optionSelected: "dataEdit" | "passwordEdit") {
-    setOption(optionSelected);
+    if (netInfo.isConnected === false && optionSelected === "passwordEdit") {
+      Alert.alert(
+        "Você está Offline",
+        "Para mudar a senha, conecte-se a internet"
+      );
+    } else {
+      setOption(optionSelected);
+    }
   }
 
   async function handleAvatarSelect() {

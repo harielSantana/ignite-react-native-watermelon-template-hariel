@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Alert, StatusBar } from "react-native";
+import { Alert, Button, StatusBar } from "react-native";
 
 import { RFValue } from "react-native-responsive-fontsize";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -28,7 +28,7 @@ export function Home({ navigation }: Props) {
   const synchronizing = useRef(false);
   const netInfo = useNetInfo();
 
-  function handleCarDetails(car: CarDTO) {
+  function handleCarDetails(car: ModelCar) {
     navigation.navigate("CarDetails", { car });
   }
 
@@ -92,10 +92,9 @@ export function Home({ navigation }: Props) {
       Alert.alert("Is connected");
       console.log(netInfo.isConnected);
     } else {
-      Alert.alert("Not connected");
       console.log(netInfo.isConnected);
     }
-  }, []);
+  }, [netInfo.isConnected]);
 
   return (
     <Container>
@@ -122,7 +121,7 @@ export function Home({ navigation }: Props) {
           data={cars}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <Car data={item} onPress={() => handleCarDetails(item)} />
+            <Car data={item} onPress={() => handleCarDetails(item._raw)} />
           )}
         />
       )}
